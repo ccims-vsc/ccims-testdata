@@ -1,0 +1,84 @@
+mutation createUserInternal($username: String!, $displayName: String!, $email: String, $password: String!) {
+  createUser(input: {
+    username: $username,
+    displayName: $displayName,
+    email: $email,
+    password: $password
+  }) {
+    user {
+      id
+    }
+  }
+}
+
+mutation createIssueInternal($title: String!, $body: String!, $category: IssueCategory, $component: ID!, $artifacts: [ID!], $assignees: [ID!], $labels: [ID!]) {
+  createIssue(input: {
+    title: $title
+    body: $body
+    category: $category
+    components: [$component]
+    labels: $labels
+    artifacts: $artifacts
+    assignees: $assignees
+  }) {
+    issue {
+      id
+      title
+      body
+    }
+  }
+}
+
+mutation linkIssueInternal($issue: ID!, $linkedIssue: ID!) {
+  linkIssue(input: {
+    issue: $issue
+    issueToLink: $linkedIssue
+  }) {
+    clientMutationID
+  }
+}
+
+mutation createComponentInternal($name: String!, $description: String!) {
+  createComponent(input: {
+    name: $name
+    description: $description
+  }) {
+    component {
+      id
+    }
+  }
+}
+
+mutation createLabelInternal($name: String!, $description: String!, $color: Color!, $components: [ID!]!) {
+  createLabel(input: {
+    name:$name
+    description: $description
+    color: $color
+    components: $components
+  }) {
+    label {
+      id
+    }
+  }
+}
+
+mutation createArtifactInternal($uri: String!, $component: ID!, $lineRangeStart: Int, $lineRangeEnd: Int) {
+  createArtifact(input: {
+    uri: $uri
+    component: $component
+    lineRangeStart: $lineRangeStart
+    lineRangeEnd: $lineRangeEnd
+  }) {
+    artifact {
+      id
+    }
+  }
+}
+
+mutation closeIssueInternal($id: ID!) {
+  closeIssue(input: {
+    issue: $id
+  }) {
+    clientMutationID
+  }
+}
