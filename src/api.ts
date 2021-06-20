@@ -2,7 +2,7 @@ import { Sdk, getSdk, CreateComponentInternalDocument, CreateComponentInternalMu
 import { GraphQLClient } from 'graphql-request';
 import axios from "axios";
 
-const publicApiUrl = "http://localhost:8080/api/public"
+const publicApiUrl = "http://server:8080/api/public"
 
 /**
  * The type of the CCIMSApi used for all requests
@@ -45,7 +45,7 @@ export type CCIMSApi = ReturnType<typeof getSdkWrapper>;
  * @returns a new instance of the CCIMSApi
  */
 export async function getCCIMSApi(username: string, password: string): Promise<CCIMSApi> {
-	const apiUrl = "http://localhost:8080/api";
+	const apiUrl = "http://server:8080/api";
 	const client = new GraphQLClient(apiUrl, {
         headers: {
             authorization: `bearer ${await getApiSecret(username, password)}`
@@ -67,7 +67,7 @@ export async function getCCIMSApi(username: string, password: string): Promise<C
 			});
 
 			return result.data.data.echo === "available"
-		} catch {
+		} catch(e) {
 			return false;
 		}
 	} else {
@@ -82,15 +82,15 @@ export async function getCCIMSApi(username: string, password: string): Promise<C
  */
  export async function createUser(input: {username: string, displayName: string, email: string, password: string}): Promise<string> {
 	const result = await axios.post(publicApiUrl, {
-        query: `mutation { registerUser(input: {username: "${input.username}", displayName: "${input.displayName}", email: "${input.email}", password: "${input.password}"}) }`
+        query: `mutation { registerUser(input: {username: "${input.username}", displayName: "${input.displayName}", email: "${input.email}", password: "${input.password}"}) { userId } }`
     });
 
-    return result.data.data.userId
+    return result.data.data.registerUser.userId
 }
 
 
 async function getApiSecret(username: string, password: string): Promise<string> {
-	const loginUrl = "http://localhost:8080/login";
+	const loginUrl = "http://server:8080/login";
 	
     const response = await axios.post(loginUrl, {
         username: username,

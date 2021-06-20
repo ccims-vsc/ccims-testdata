@@ -5,8 +5,10 @@ mainIfApiAvailable();
 
 async function mainIfApiAvailable() {
     if (await isApiReachable()) {
+        console.log("enter data");
         main()
     } else {
+        console.log("wait");
         setTimeout(() => mainIfApiAvailable(), 5000);
     }
 }
