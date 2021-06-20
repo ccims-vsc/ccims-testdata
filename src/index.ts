@@ -104,7 +104,7 @@ async function main() {
   const issueId2 = await api.createIssue({
     component: engineId,
     title: "Live rendered cubemaps",
-    body: "Render cubmaps using good renderer live on scene entry",
+    body: "Render cubemaps using good renderer live on scene entry",
     category: IssueCategory.FeatureRequest,
     isOpen: true,
     labels: [labelEngineId, labelScriptFeatureId],
@@ -152,7 +152,7 @@ async function main() {
   const issueId6 = await api.createIssue({
     component: oftId,
     title: "Pizza Kawaii allows wall glitch",
-    body: "Running in the Soutch-East wall of Pizza Kawaii results in the reset of the player to origin",
+    body: "Running in the South-East wall of Pizza Kawaii results in the reset of the player to origin",
     category: IssueCategory.Bug,
     isOpen: true,
     labels: [labelPlanetId],
