@@ -4731,25 +4731,6 @@ export type WasUnlinkedEvent = IssueTimelineItem & Node & {
   unlinkedBy?: Maybe<Issue>;
 };
 
-export type CreateUserInternalMutationVariables = Exact<{
-  username: Scalars['String'];
-  displayName: Scalars['String'];
-  email?: Maybe<Scalars['String']>;
-  password: Scalars['String'];
-}>;
-
-
-export type CreateUserInternalMutation = (
-  { __typename?: 'Mutation' }
-  & { createUser?: Maybe<(
-    { __typename?: 'CreateUserPayload' }
-    & { user?: Maybe<(
-      { __typename?: 'CCIMSUser' }
-      & Pick<CcimsUser, 'id'>
-    )> }
-  )> }
-);
-
 export type CreateIssueInternalMutationVariables = Exact<{
   title: Scalars['String'];
   body: Scalars['String'];
@@ -4855,17 +4836,6 @@ export type CloseIssueInternalMutation = (
 );
 
 
-export const CreateUserInternalDocument = gql`
-    mutation createUserInternal($username: String!, $displayName: String!, $email: String, $password: String!) {
-  createUser(
-    input: {username: $username, displayName: $displayName, email: $email, password: $password}
-  ) {
-    user {
-      id
-    }
-  }
-}
-    `;
 export const CreateIssueInternalDocument = gql`
     mutation createIssueInternal($title: String!, $body: String!, $category: IssueCategory, $component: ID!, $artifacts: [ID!], $assignees: [ID!], $labels: [ID!]) {
   createIssue(
@@ -4932,9 +4902,6 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    createUserInternal(variables: CreateUserInternalMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateUserInternalMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<CreateUserInternalMutation>(CreateUserInternalDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createUserInternal');
-    },
     createIssueInternal(variables: CreateIssueInternalMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateIssueInternalMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CreateIssueInternalMutation>(CreateIssueInternalDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createIssueInternal');
     },

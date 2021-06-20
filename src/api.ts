@@ -1,15 +1,14 @@
-import { Sdk, getSdk, CreateUserInternalMutationVariables, CreateComponentInternalDocument, CreateComponentInternalMutationVariables, CreateLabelInternalMutationVariables, CreateArtifactInternalMutationVariables, CreateIssueInternalMutationVariables } from "./generated/graphql";
+import { Sdk, getSdk, CreateComponentInternalDocument, CreateComponentInternalMutationVariables, CreateLabelInternalMutationVariables, CreateArtifactInternalMutationVariables, CreateIssueInternalMutationVariables } from "./generated/graphql";
 import { GraphQLClient } from 'graphql-request';
+import axios from "axios";
+
+const publicApiUrl = "http://localhost:8080/api/public"
 
 /**
  * The type of the CCIMSApi used for all requests
  */
  function getSdkWrapper(sdk: Sdk) {
 	return {
-		async createUser(input: CreateUserInternalMutationVariables): Promise<string> {
-            const result = await sdk.createUserInternal(input);
-            return result.createUser?.user?.id as string;
-        },
         async createComponent(input: CreateComponentInternalMutationVariables): Promise<string> {
             const result = await sdk.createComponentInternal(input);
             return result.createComponent?.component?.id as string;
@@ -45,8 +44,58 @@ export type CCIMSApi = ReturnType<typeof getSdkWrapper>;
  * Gets a new CCIMSApi
  * @returns a new instance of the CCIMSApi
  */
-export function getCCIMSApi(): CCIMSApi {
+export async function getCCIMSApi(username: string, password: string): Promise<CCIMSApi> {
 	const apiUrl = "http://localhost:8080/api";
-	const client = new GraphQLClient(apiUrl);
+	const client = new GraphQLClient(apiUrl, {
+        headers: {
+            authorization: `bearer ${await getApiSecret(username, password)}`
+        }
+    });
     return getSdkWrapper(getSdk(client));
+}
+
+/**
+ * Checks if the api is reachable
+ * does not check if login information exists
+ * @returns true if the api is reachable, otherwise false
+ */
+ export async function isApiReachable(): Promise<boolean> {
+	if (publicApiUrl != undefined) {
+		try {
+			const result = await axios.post(publicApiUrl, {
+				query: "query { echo(input: \"available\") }"
+			});
+
+			return result.data.data.echo === "available"
+		} catch {
+			return false;
+		}
+	} else {
+		return false;
+	}
+}
+
+/**
+ * Checks if the api is reachable
+ * does not check if login information exists
+ * @returns true if the api is reachable, otherwise false
+ */
+ export async function createUser(input: {username: string, displayName: string, email: string, password: string}): Promise<string> {
+	const result = await axios.post(publicApiUrl, {
+        query: `mutation { registerUser(input: {username: "${input.username}", displayName: "${input.displayName}", email: "${input.email}", password: "${input.password}"}) }`
+    });
+
+    return result.data.data.userId
+}
+
+
+async function getApiSecret(username: string, password: string): Promise<string> {
+	const loginUrl = "http://localhost:8080/login";
+	
+    const response = await axios.post(loginUrl, {
+        username: username,
+        password: password
+    });
+
+    return response.data.token;
 }

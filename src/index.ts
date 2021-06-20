@@ -1,17 +1,25 @@
-import { getCCIMSApi } from "./api";
+import { createUser, getCCIMSApi, isApiReachable } from "./api";
 import { IssueCategory } from "./generated/graphql";
 
-main();
+mainIfApiAvailable();
+
+async function mainIfApiAvailable() {
+    if (await isApiReachable()) {
+        main()
+    } else {
+        setTimeout(() => mainIfApiAvailable(), 5000);
+    }
+}
 
 async function main() {
-    const api = getCCIMSApi();
-
-    const userId = await api.createUser({
-        username: "test-user100",
+    const userId = await createUser({
+        username: "testuser",
         displayName: "Test User",
         email: "test100@test.com",
         password: "test-password"
     });
+
+    const api = await getCCIMSApi("testuser", "test-password");
 
     const componentId = await api.createComponent({
         name: "Hello world component",
