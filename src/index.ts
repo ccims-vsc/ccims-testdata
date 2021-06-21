@@ -47,6 +47,12 @@ async function main() {
     description: "Main game data",
   });
 
+  const nieProjectId = await api.createProject({
+    name: "Nie",
+    description: "The nie project",
+    components: [engineId, oftId]
+  })
+
   const labelPlanetId = await api.createLabel({
     components: [oftId],
     name: "Planet Specific",
@@ -90,7 +96,7 @@ async function main() {
   });*/
 
   const issueId1 = await api.createIssue({
-    component: engineId,
+    components: engineId,
     title: "Provide scenes to cycles",
     body: "Feed snapshot of scene to cycles",
     category: IssueCategory.FeatureRequest,
@@ -102,7 +108,7 @@ async function main() {
   });
 
   const issueId2 = await api.createIssue({
-    component: engineId,
+    components: engineId,
     title: "Live rendered cubemaps",
     body: "Render cubemaps using good renderer live on scene entry",
     category: IssueCategory.FeatureRequest,
@@ -114,7 +120,7 @@ async function main() {
   });
 
   const issueId3 = await api.createIssue({
-    component: oftId,
+    components: oftId,
     title: "Pizza Kawaii",
     body: "Create planet for `Pizza Kawaii`\nNeeds:\n* Eating Area\n* Kitchen Area (SB isolated)\n* Badly Visible Area",
     category: IssueCategory.FeatureRequest,
@@ -126,7 +132,7 @@ async function main() {
   });
 
   const issueId4 = await api.createIssue({
-    component: oftId,
+    components: oftId,
     title: "Pizza Kawaii Logo",
     body: "Logo for Pizza Kawaii",
     category: IssueCategory.FeatureRequest,
@@ -138,7 +144,7 @@ async function main() {
   });
 
   const issueId5 = await api.createIssue({
-    component: oftId,
+    components: oftId,
     title: "Pizza Kawaii Pizza Baking",
     body: "Allow Backing of Pizzas",
     category: IssueCategory.FeatureRequest,
@@ -150,7 +156,7 @@ async function main() {
   });
 
   const issueId6 = await api.createIssue({
-    component: oftId,
+    components: oftId,
     title: "Pizza Kawaii allows wall glitch",
     body: "Running in the South-East wall of Pizza Kawaii results in the reset of the player to origin",
     category: IssueCategory.Bug,
@@ -162,7 +168,7 @@ async function main() {
   });
 
   const issueId7 = await api.createIssue({
-    component: oftId,
+    components: oftId,
     title: "Redo lighting for screenshot render",
     body: "Lighting has to be redone when using cycles instead of gl33",
     category: IssueCategory.Bug,
@@ -174,7 +180,7 @@ async function main() {
   });
 
   const issueId8 = await api.createIssue({
-    component: oftId,
+    components: oftId,
     title: "Redo lighting for screenshot render in Pizza Kawaii",
     body: "",
     category: IssueCategory.Bug,
@@ -186,7 +192,7 @@ async function main() {
   });
 
   const issueId9 = await api.createIssue({
-    component: oftId,
+    components: oftId,
     title: "Add R&D back home in Core",
     body: "Add R&D Mechanic where other centrals allow for experience gain for returned artifacts",
     category: IssueCategory.FeatureRequest,
@@ -198,7 +204,7 @@ async function main() {
   });
 
   const issueId10 = await api.createIssue({
-    component: oftId,
+    components: oftId,
     title: "Missing friendly NPC in Core",
     body: "Core does not have anyone who could accept returned technology",
     category: IssueCategory.FeatureRequest,

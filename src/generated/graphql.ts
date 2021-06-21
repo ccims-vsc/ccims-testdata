@@ -4735,7 +4735,7 @@ export type CreateIssueInternalMutationVariables = Exact<{
   title: Scalars['String'];
   body: Scalars['String'];
   category?: Maybe<IssueCategory>;
-  component: Scalars['ID'];
+  components: Array<Scalars['ID']> | Scalars['ID'];
   artifacts?: Maybe<Array<Scalars['ID']> | Scalars['ID']>;
   assignees?: Maybe<Array<Scalars['ID']> | Scalars['ID']>;
   labels?: Maybe<Array<Scalars['ID']> | Scalars['ID']>;
@@ -4835,11 +4835,29 @@ export type CloseIssueInternalMutation = (
   )> }
 );
 
+export type CreateProjectInternalMutationVariables = Exact<{
+  name: Scalars['String'];
+  description: Scalars['String'];
+  components: Array<Scalars['ID']> | Scalars['ID'];
+}>;
+
+
+export type CreateProjectInternalMutation = (
+  { __typename?: 'Mutation' }
+  & { createProject?: Maybe<(
+    { __typename?: 'CreateProjectPayload' }
+    & { project?: Maybe<(
+      { __typename?: 'Project' }
+      & Pick<Project, 'id'>
+    )> }
+  )> }
+);
+
 
 export const CreateIssueInternalDocument = gql`
-    mutation createIssueInternal($title: String!, $body: String!, $category: IssueCategory, $component: ID!, $artifacts: [ID!], $assignees: [ID!], $labels: [ID!]) {
+    mutation createIssueInternal($title: String!, $body: String!, $category: IssueCategory, $components: [ID!]!, $artifacts: [ID!], $assignees: [ID!], $labels: [ID!]) {
   createIssue(
-    input: {title: $title, body: $body, category: $category, components: [$component], labels: $labels, artifacts: $artifacts, assignees: $assignees}
+    input: {title: $title, body: $body, category: $category, components: $components, labels: $labels, artifacts: $artifacts, assignees: $assignees}
   ) {
     issue {
       id
@@ -4894,6 +4912,17 @@ export const CloseIssueInternalDocument = gql`
   }
 }
     `;
+export const CreateProjectInternalDocument = gql`
+    mutation createProjectInternal($name: String!, $description: String!, $components: [ID!]!) {
+  createProject(
+    input: {name: $name, description: $description, components: $components}
+  ) {
+    project {
+      id
+    }
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
 
@@ -4919,6 +4948,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     closeIssueInternal(variables: CloseIssueInternalMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CloseIssueInternalMutation> {
       return withWrapper((wrappedRequestHeaders) => client.request<CloseIssueInternalMutation>(CloseIssueInternalDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'closeIssueInternal');
+    },
+    createProjectInternal(variables: CreateProjectInternalMutationVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<CreateProjectInternalMutation> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CreateProjectInternalMutation>(CreateProjectInternalDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'createProjectInternal');
     }
   };
 }

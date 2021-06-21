@@ -1,8 +1,9 @@
-import { Sdk, getSdk, CreateComponentInternalDocument, CreateComponentInternalMutationVariables, CreateLabelInternalMutationVariables, CreateArtifactInternalMutationVariables, CreateIssueInternalMutationVariables } from "./generated/graphql";
+import { Sdk, getSdk, CreateComponentInternalDocument, CreateComponentInternalMutationVariables, CreateLabelInternalMutationVariables, CreateArtifactInternalMutationVariables, CreateIssueInternalMutationVariables, CreateProjectInternalDocument, CreateProjectInternalMutationVariables } from "./generated/graphql";
 import { GraphQLClient } from 'graphql-request';
 import axios from "axios";
 
-const publicApiUrl = "http://server:8080/api/public"
+const url = process.env.API_URL ? process.env.API_URL : "http://server:8080"
+const publicApiUrl = url + "/api/public"
 
 /**
  * The type of the CCIMSApi used for all requests
@@ -12,6 +13,10 @@ const publicApiUrl = "http://server:8080/api/public"
         async createComponent(input: CreateComponentInternalMutationVariables): Promise<string> {
             const result = await sdk.createComponentInternal(input);
             return result.createComponent?.component?.id as string;
+        },
+        async createProject(input: CreateProjectInternalMutationVariables): Promise<string> {
+            const result = await sdk.createProjectInternal(input);
+            return result.createProject?.project?.id as string;
         },
         async createLabel(input: CreateLabelInternalMutationVariables): Promise<string> {
             const result = await sdk.createLabelInternal(input);
@@ -45,7 +50,7 @@ export type CCIMSApi = ReturnType<typeof getSdkWrapper>;
  * @returns a new instance of the CCIMSApi
  */
 export async function getCCIMSApi(username: string, password: string): Promise<CCIMSApi> {
-	const apiUrl = "http://server:8080/api";
+	const apiUrl = url + "/api";
 	const client = new GraphQLClient(apiUrl, {
         headers: {
             authorization: `bearer ${await getApiSecret(username, password)}`
@@ -90,7 +95,7 @@ export async function getCCIMSApi(username: string, password: string): Promise<C
 
 
 async function getApiSecret(username: string, password: string): Promise<string> {
-	const loginUrl = "http://server:8080/login";
+	const loginUrl = url + "/login";
 	
     const response = await axios.post(loginUrl, {
         username: username,

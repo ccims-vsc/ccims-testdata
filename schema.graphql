@@ -1,9 +1,9 @@
-mutation createIssueInternal($title: String!, $body: String!, $category: IssueCategory, $component: ID!, $artifacts: [ID!], $assignees: [ID!], $labels: [ID!]) {
+mutation createIssueInternal($title: String!, $body: String!, $category: IssueCategory, $components: [ID!]!, $artifacts: [ID!], $assignees: [ID!], $labels: [ID!]) {
   createIssue(input: {
     title: $title
     body: $body
     category: $category
-    components: [$component]
+    components: $components
     labels: $labels
     artifacts: $artifacts
     assignees: $assignees
@@ -67,5 +67,17 @@ mutation closeIssueInternal($id: ID!) {
     issue: $id
   }) {
     clientMutationID
+  }
+}
+
+mutation createProjectInternal($name: String!, $description: String!, $components: [ID!]!) {
+  createProject(input: {
+    name: $name
+    description: $description
+    components: $components
+  }) {
+    project {
+      id
+    }
   }
 }
