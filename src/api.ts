@@ -2,7 +2,7 @@ import { Sdk, getSdk, CreateComponentInternalDocument, CreateComponentInternalMu
 import { GraphQLClient } from 'graphql-request';
 import axios from "axios";
 
-const url = process.env.API_URL ? process.env.API_URL : "http://server:8080"
+const url = process.env.API_URL ? process.env.API_URL : "http://localhost:8080"
 const publicApiUrl = url + "/api/public"
 
 /**

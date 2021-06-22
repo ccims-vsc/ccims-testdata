@@ -45,6 +45,7 @@ async function main() {
   const oftId = await api.createComponent({
     name: "Oft",
     description: "Main game data",
+    repository: "https://github.com/ccims-vsc/example-project"
   });
 
   const nieProjectId = await api.createProject({
@@ -88,12 +89,24 @@ async function main() {
     color: "#0000ff",
   });
 
-  /*const artifactId = await api.createArtifact({
-    component: componentId,
-    uri: "http://github.com/IDontKnow",
+  const artifactId = await api.createArtifact({
+    component: oftId,
+    uri: "https://github.com/ccims-vsc/example-project/blob/main/README.md",
     lineRangeStart: 1,
     lineRangeEnd: 10,
-  });*/
+  });
+
+  const artifact2Id = await api.createArtifact({
+    component: oftId,
+    uri: "https://github.com/ccims-vsc/example-project/blob/main/README.md",
+    lineRangeStart: 5,
+    lineRangeEnd: 8,
+  });
+
+  const googleArtifact = await api.createArtifact({
+    component: oftId,
+    uri: "https://google.com",
+  });
 
   const issueId1 = await api.createIssue({
     components: engineId,
@@ -126,7 +139,7 @@ async function main() {
     category: IssueCategory.FeatureRequest,
     isOpen: true,
     labels: [labelPlanetId],
-    artifacts: [],
+    artifacts: [artifactId],
     assignees: [christianId],
     linkedIssues: [],
   });
@@ -138,7 +151,7 @@ async function main() {
     category: IssueCategory.FeatureRequest,
     isOpen: false,
     labels: [labelPlanetId],
-    artifacts: [],
+    artifacts: [artifact2Id, googleArtifact],
     assignees: [susannaId],
     linkedIssues: [issueId3],
   });

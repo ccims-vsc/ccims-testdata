@@ -402,6 +402,18 @@ export type Artifact = Node & {
   lineRangeStart?: Maybe<Scalars['Int']>;
   /** The end (inclusive) of the lines range the Artifact refers to, optional (can only be applied to text resources) */
   lineRangeEnd?: Maybe<Scalars['Int']>;
+  /** All issues that have the given artifact */
+  issues?: Maybe<IssuePage>;
+};
+
+
+/** An artifact assignable to issues. An artifact is per-component */
+export type ArtifactIssuesArgs = {
+  after?: Maybe<Scalars['String']>;
+  before?: Maybe<Scalars['String']>;
+  filterBy?: Maybe<IssueFilter>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 };
 
 /** An edge for a ArtifactPage to link a cursor to an element */
@@ -4770,6 +4782,7 @@ export type LinkIssueInternalMutation = (
 export type CreateComponentInternalMutationVariables = Exact<{
   name: Scalars['String'];
   description: Scalars['String'];
+  repository?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -4875,8 +4888,10 @@ export const LinkIssueInternalDocument = gql`
 }
     `;
 export const CreateComponentInternalDocument = gql`
-    mutation createComponentInternal($name: String!, $description: String!) {
-  createComponent(input: {name: $name, description: $description}) {
+    mutation createComponentInternal($name: String!, $description: String!, $repository: String) {
+  createComponent(
+    input: {name: $name, description: $description, repositoryURL: $repository}
+  ) {
     component {
       id
     }

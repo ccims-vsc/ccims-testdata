@@ -25,10 +25,11 @@ mutation linkIssueInternal($issue: ID!, $linkedIssue: ID!) {
   }
 }
 
-mutation createComponentInternal($name: String!, $description: String!) {
+mutation createComponentInternal($name: String!, $description: String!, $repository: String) {
   createComponent(input: {
     name: $name
     description: $description
+    repositoryURL: $repository 
   }) {
     component {
       id
