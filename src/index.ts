@@ -93,7 +93,7 @@ async function main() {
     component: oftId,
     uri: "https://github.com/ccims-vsc/example-project/blob/main/README.md",
     lineRangeStart: 17,
-    lineRangeEnd: 17,
+    lineRangeEnd: 20,
   });
 
   const artifactfor5 = await api.createArtifact({
