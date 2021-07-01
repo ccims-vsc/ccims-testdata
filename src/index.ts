@@ -89,23 +89,23 @@ async function main() {
     color: "#0000ff",
   });
 
-  const artifactId = await api.createArtifact({
+  const artifactfor3 = await api.createArtifact({
     component: oftId,
     uri: "https://github.com/ccims-vsc/example-project/blob/main/README.md",
-    lineRangeStart: 1,
-    lineRangeEnd: 10,
+    lineRangeStart: 17,
+    lineRangeEnd: 17,
   });
 
-  const artifact2Id = await api.createArtifact({
+  const artifactfor5 = await api.createArtifact({
     component: oftId,
-    uri: "https://github.com/ccims-vsc/example-project/blob/main/README.md",
-    lineRangeStart: 5,
-    lineRangeEnd: 8,
+    uri: "https://github.com/ccims-vsc/example-project/blob/main/oven.lua",
+    lineRangeStart: 18,
+    lineRangeEnd: 18,
   });
 
-  const googleArtifact = await api.createArtifact({
+  const artifactfor3link = await api.createArtifact({
     component: oftId,
-    uri: "https://google.com",
+    uri: "https://youtu.be/dQw4w9WgXcQ"
   });
 
   const issueId1 = await api.createIssue({
@@ -139,7 +139,7 @@ async function main() {
     category: IssueCategory.FeatureRequest,
     isOpen: true,
     labels: [labelPlanetId],
-    artifacts: [artifactId],
+    artifacts: [artifactfor3, artifactfor3link],
     assignees: [christianId],
     linkedIssues: [],
   });
@@ -151,7 +151,7 @@ async function main() {
     category: IssueCategory.FeatureRequest,
     isOpen: false,
     labels: [labelPlanetId],
-    artifacts: [artifact2Id, googleArtifact],
+    artifacts: [],
     assignees: [susannaId],
     linkedIssues: [issueId3],
   });
@@ -163,7 +163,7 @@ async function main() {
     category: IssueCategory.FeatureRequest,
     isOpen: true,
     labels: [labelPlanetId, labelMechanicId],
-    artifacts: [],
+    artifacts: [artifactfor5],
     assignees: [christianId],
     linkedIssues: [issueId3],
   });
