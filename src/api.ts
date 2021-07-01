@@ -10,6 +10,7 @@ const publicApiUrl = url + "/api/public"
  */
  function getSdkWrapper(sdk: Sdk) {
 	return {
+        ...sdk,
         async createComponent(input: CreateComponentInternalMutationVariables): Promise<string> {
             const result = await sdk.createComponentInternal(input);
             return result.createComponent?.component?.id as string;

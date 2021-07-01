@@ -156,6 +156,8 @@ async function main() {
     linkedIssues: [issueId3],
   });
 
+  await api.linkIssueInternal({issue: issueId3, linkedIssue: issueId4});
+
   const issueId5 = await api.createIssue({
     components: oftId,
     title: "Pizza Kawaii Pizza Baking",
